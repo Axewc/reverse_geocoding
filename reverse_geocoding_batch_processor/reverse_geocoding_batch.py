@@ -14,6 +14,12 @@ import time
 from typing import List, Tuple, Dict, Optional
 import argparse
 
+'''
+Clean address text by removing special characters and extra whitespace.
+@param text: The address text to clean.
+@param aggressive: If True, removes some accented characters for compatibility.
+@return: Cleaned address text.
+'''
 def clean_address_text(text: str, aggressive: bool = False) -> str:
     """
     Clean special characters from address text while preserving language-specific characters
@@ -58,6 +64,12 @@ def clean_address_text(text: str, aggressive: bool = False) -> str:
     
     return cleaned
 
+'''
+Load environment variables and get API key
+@param: None
+@return: API key as string
+@raises: ValueError if OPENCAGE_API_KEY is not found
+'''
 def load_dotenv_and_get_key() -> str:
     """Load environment variables and get API key"""
     load_dotenv()
@@ -66,6 +78,13 @@ def load_dotenv_and_get_key() -> str:
         raise ValueError("OPENCAGE_API_KEY not found in environment variables or .env file")
     return key
 
+'''
+Read coordinates from CSV file
+Assumes the CSV has columns named 'lat' and 'lng' or similar variations
+Returns a list of (latitude, longitude) tuples
+@param file_path: Path to the CSV file
+@return: List of (latitude, longitude) tuples
+'''
 def read_coordinates_from_csv(file_path: str) -> List[Tuple[float, float]]:
     """Read coordinates from CSV file"""
     try:
@@ -110,6 +129,11 @@ def read_coordinates_from_csv(file_path: str) -> List[Tuple[float, float]]:
         print(f"Error reading CSV file: {e}")
         return []
 
+'''
+Read coordinates from TXT file (format: lat,lng or lat lng)
+@param file_path: Path to the TXT file
+@return: List of (latitude, longitude) tuples
+'''
 def read_coordinates_from_txt(file_path: str) -> List[Tuple[float, float]]:
     """Read coordinates from TXT file (format: lat,lng or lat lng)"""
     coordinates = []
@@ -145,6 +169,17 @@ def read_coordinates_from_txt(file_path: str) -> List[Tuple[float, float]]:
     
     return coordinates
 
+'''
+Reverse geocode a list of coordinates
+@param geocoder: OpenCageGeocode instance
+@param coordinates: List of (latitude, longitude) tuples
+@param delay: Delay between API requests in seconds
+@param clean_special_chars: If True, clean special characters from addresses
+@param aggressive: If True, use aggressive cleaning (removes some accented characters)
+@param language: Language for geocoding results (e.g., 'es', 'en', 'fr', 'de')
+@param country_code: Country code to bias results (e.g., 'es', 'us')
+@return: List of dictionaries with geocoding results
+'''
 def reverse_geocode_coordinates(geocoder: OpenCageGeocode, coordinates: List[Tuple[float, float]], 
                               delay: float = 1.0, clean_special_chars: bool = False, aggressive: bool = False,
                               language: str = 'en', country_code: Optional[str] = None) -> List[Dict]:
@@ -229,6 +264,12 @@ def reverse_geocode_coordinates(geocoder: OpenCageGeocode, coordinates: List[Tup
     
     return results
 
+'''
+Save results to CSV file
+@param results: List of dictionaries with geocoding results
+@param output_file: Path to the output CSV file
+@return: None
+'''
 def save_results_to_csv(results: List[Dict], output_file: str):
     """Save results to CSV file"""
     try:
