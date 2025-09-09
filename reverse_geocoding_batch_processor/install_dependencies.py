@@ -23,7 +23,8 @@ def main():
     packages = [
         "python-dotenv",
         "opencage", 
-        "pandas"
+        "pandas",
+        "requests"  # Para funcionalidades adicionales de enriquecimiento
     ]
     
     all_success = True
