@@ -14,8 +14,11 @@ def test_kml_extraction():
     
     # Ruta al archivo KML de prueba
     # Cambiar esta ruta al archivo KML que se desea probar
-    kml_file = r"c:\Users\axewc\Downloads\file.kml"
-    
+    kml_file = "/BMW.kml"
+    # Estandarizamos el nombre del archivo de salida basandonos en el nombre del archivo kml
+    output_base = kml_file.split(".")[0]
+    output_csv = f"{output_base}_extracted.csv"
+    output_json = f"{output_base}_extracted.json"
     try:
         print("=== PRUEBA DEL EXTRACTOR KML ===")
         print(f"Procesando archivo: {kml_file}")
@@ -30,9 +33,9 @@ def test_kml_extraction():
         extractor.print_summary()
         
         # Guardar en diferentes formatos
-        extractor.save_to_csv("volkswagen_extracted.csv")
-        extractor.save_to_json("volkswagen_extracted.json")
-        
+        extractor.save_to_csv(f"{output_base}_extracted.csv")
+        extractor.save_to_json(f"{output_base}_extracted.json")
+
         print("\n=== EJEMPLOS DE DATOS EXTRAÍDOS ===")
         for i, item in enumerate(data[:3]):  # Mostrar solo los primeros 3
             print(f"\nRegistro {i+1}:")
